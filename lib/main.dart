@@ -117,10 +117,12 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
 
   void createGrid(List<List<String>> gridText) {
     removeGrid();
-    for (List<String> rowText in gridText) {
+    for (int row = 0; row < gridText.length; row++) {
+      List<String> rowText = gridText[row];
       List<TextField> newRow = [];
       List<TextEditingController> newControllersRow = [];
-      for (String cellText in rowText) {
+      for (int col = 0; col < rowText.length; col++) {
+        String cellText = rowText[col];
         TextEditingController newController =
             TextEditingController(text: cellText);
         newControllersRow.add(newController);

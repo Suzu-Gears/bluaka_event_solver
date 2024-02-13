@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'local_storage.dart';
+import 'dart:convert';
 
 void main() {
   runApp(MyApp());
@@ -44,8 +46,12 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
   @override
   void initState() {
     super.initState();
-    // 行列の初期化
-    initializeGrid();
+    Future(() async {
+      final String? loadedText = await loadText();
+      loadedText != null
+          ? createGrid(parseStringToListOfLists(loadedText))
+          : initializeGrid();
+    });
   }
 
   void initializeGrid() {
@@ -147,16 +153,26 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
     );
   }
 
-  void showGridAsText() {
+  String converControllerGridToString(
+      List<List<TextEditingController>> controllersGrid) {
+    String rowToString(List<TextEditingController> row) {
+      String texts = row.map((controller) => '"${controller.text}"').join(', ');
+      return '[$texts]';
+    }
+
+    String result = controllersGrid.map(rowToString).join(', ');
+
+    return '[$result]';
+  }
+
+  void showCustomDialog(String title, String content) async {
     // テキスト形式で二次配列をダイアログに表示
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('配列の内容'),
-          content: SelectableText('[${controllersGrid.map((row) {
-            return '[${row.map((controller) => controller.text).join(', ')}]';
-          }).join(',')}]'),
+          title: Text(title),
+          content: SelectableText(content),
           actions: <Widget>[
             ElevatedButton(
               child: Text('閉じる'),
@@ -170,14 +186,16 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
     );
   }
 
-  void createGridTrigger() {
-    createGrid([
-      ['Stage8', '0', '0', '0', '0', '0'],
-      ['Stage9', '1', '1', '1', '1', '1'],
-      ['Stage10', '2', '2', '2', '2', '2'],
-      ['Stage11', '3', '3', '3', '3', '3'],
-      ['Stage12', '4', '4', '4', '4', '4']
-    ]);
+  List<List<String>> parseStringToListOfLists(String jsonString) {
+    // JSONをデコードしてオブジェクトに変換
+    List<dynamic> decoded = json.decode(jsonString);
+
+    // List<dynamic>からList<List<String>>にキャスト
+    List<List<String>> gridText = decoded
+        .map<List<String>>((dynamic row) => List<String>.from(row))
+        .toList();
+
+    return gridText;
   }
 
   @override
@@ -236,16 +254,33 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
-                    onPressed: showGridAsText,
+                      onPressed: () async {
+                        saveText(converControllerGridToString(controllersGrid));
+                      },
+                      child: Text('SAVE')),
+                  ElevatedButton(
+                      onPressed: () async {
+                        final String? loadedText = await loadText();
+                        loadedText != null
+                            ? createGrid(parseStringToListOfLists(loadedText))
+                            : showCustomDialog('読み取り結果', 'データが保存されていません。');
+                      },
+                      child: Text('LOAD')),
+                  ElevatedButton(
+                    onPressed: () {
+                      showCustomDialog('配列の内容',
+                          converControllerGridToString(controllersGrid));
+                    },
                     child: Text('配列表示'),
                   ),
                   ElevatedButton(
-                    onPressed: resetGrid,
-                    child: Text('配列リセット'),
-                  ),
+                      onPressed: () async {
+                        removeText();
+                      },
+                      child: Text('REMOVE')),
                   ElevatedButton(
-                    onPressed: createGridTrigger,
-                    child: Text('配列作成'),
+                    onPressed: resetGrid,
+                    child: Text('RESET'),
                   ),
                 ],
               ),

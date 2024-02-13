@@ -49,8 +49,14 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
   }
 
   void initializeGrid() {
-    // 初期状態で1行1列のテキストフィールドを追加
+    // 初期状態で4行3列のテキストフィールドを追加
     addRow();
+    addRow();
+    addRow();
+    addRow();
+    addColumn();
+    addColumn();
+    addColumn();
   }
 
   void addRow() {
@@ -103,6 +109,34 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
     }
   }
 
+  void createGrid(List<List<String>> gridText) {
+    removeGrid();
+    for (List<String> rowText in gridText) {
+      List<TextField> newRow = [];
+      List<TextEditingController> newControllersRow = [];
+      for (String cellText in rowText) {
+        TextEditingController newController =
+            TextEditingController(text: cellText);
+        newControllersRow.add(newController);
+        newRow.add(createTextField(newController));
+      }
+      textFieldGrid.add(newRow);
+      controllersGrid.add(newControllersRow);
+    }
+  }
+
+  void resetGrid() {
+    removeGrid();
+    initializeGrid();
+  }
+
+  void removeGrid() {
+    setState(() {
+      textFieldGrid.clear();
+      controllersGrid.clear();
+    });
+  }
+
   TextField createTextField(TextEditingController controller) {
     return TextField(
       controller: controller,
@@ -134,6 +168,16 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
         );
       },
     );
+  }
+
+  void createGridTrigger() {
+    createGrid([
+      ['Stage8', '0', '0', '0', '0', '0'],
+      ['Stage9', '1', '1', '1', '1', '1'],
+      ['Stage10', '2', '2', '2', '2', '2'],
+      ['Stage11', '3', '3', '3', '3', '3'],
+      ['Stage12', '4', '4', '4', '4', '4']
+    ]);
   }
 
   @override
@@ -194,6 +238,14 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
                   ElevatedButton(
                     onPressed: showGridAsText,
                     child: Text('配列表示'),
+                  ),
+                  ElevatedButton(
+                    onPressed: resetGrid,
+                    child: Text('配列リセット'),
+                  ),
+                  ElevatedButton(
+                    onPressed: createGridTrigger,
+                    child: Text('配列作成'),
                   ),
                 ],
               ),

@@ -97,21 +97,6 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Flexible(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ...textFieldGrid.map((List<TextField> row) {
-                      return Row(
-                        children: row
-                            .map((textField) => Expanded(child: textField))
-                            .toList(),
-                      );
-                    }).toList(),
-                  ],
-                ),
-              ),
-            ),
             Container(
               padding: const EdgeInsets.all(8),
               color: Colors.blueGrey,
@@ -137,6 +122,34 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
                         ? removeColumn
                         : null, //列が1つのみの場合は削除ボタンを非活性化
                     child: Text('列を削除'),
+                  ),
+                ],
+              ),
+            ),
+            Flexible(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ...textFieldGrid.map((List<TextField> row) {
+                      return Row(
+                        children: row
+                            .map((textField) => Expanded(child: textField))
+                            .toList(),
+                      );
+                    }).toList(),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(8),
+              color: Colors.blueGrey,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: null,
+                    child: Text('配列表示'),
                   ),
                 ],
               ),

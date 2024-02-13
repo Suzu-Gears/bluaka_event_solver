@@ -27,6 +27,19 @@ class DynamicLayoutScreen extends StatefulWidget {
 class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
   // テキストフィールドのリストを管理するための二次配列
   List<List<TextField>> textFieldGrid = [];
+  // テキストフィールドのコントローラーの二次配列
+  List<List<TextEditingController>> controllersGrid = [];
+
+  @override
+  void dispose() {
+    // コントローラーのリソースを解放
+    for (var row in controllersGrid) {
+      for (var controller in row) {
+        controller.dispose();
+      }
+    }
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -41,22 +54,27 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
   }
 
   void addRow() {
-    // 新しい行を追加し、現在の列の数だけテキストフィールドを追加する
     setState(() {
       int numberOfColumns =
-          textFieldGrid.isEmpty ? 1 : textFieldGrid.first.length;
-      List<TextField> newRow = List.generate(
-        numberOfColumns,
-        (index) => createTextField(),
-      );
+          controllersGrid.isEmpty ? 1 : controllersGrid.first.length;
+      List<TextField> newRow = [];
+      List<TextEditingController> newControllersRow = [];
+      for (int i = 0; i < numberOfColumns; i++) {
+        TextEditingController newController = TextEditingController();
+        newControllersRow.add(newController);
+        newRow.add(createTextField(newController));
+      }
       textFieldGrid.add(newRow);
+      controllersGrid.add(newControllersRow);
     });
   }
 
   void addColumn() {
     setState(() {
-      for (var row in textFieldGrid) {
-        row.add(createTextField());
+      for (int i = 0; i < textFieldGrid.length; i++) {
+        TextEditingController newController = TextEditingController();
+        controllersGrid[i].add(newController);
+        textFieldGrid[i].add(createTextField(newController));
       }
     });
   }
@@ -66,6 +84,8 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
     if (textFieldGrid.length > 1) {
       setState(() {
         textFieldGrid.removeLast();
+        // コントローラーのリストも削除
+        controllersGrid.removeLast();
       });
     }
   }
@@ -77,16 +97,44 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
         for (var row in textFieldGrid) {
           row.removeLast();
         }
+        // 各行から最後のコントローラーを削除
+        for (var rowControllers in controllersGrid) {
+          rowControllers.removeLast();
+        }
       });
     }
   }
 
-  TextField createTextField() {
+  TextField createTextField(TextEditingController controller) {
     return TextField(
+      controller: controller,
       decoration: InputDecoration(
         border: OutlineInputBorder(),
         hintText: '入力してください',
       ),
+    );
+  }
+
+  void showGridAsText() {
+    // テキスト形式で二次配列をダイアログに表示
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('配列の内容'),
+          content: SelectableText('[${controllersGrid.map((row) {
+            return '[${row.map((controller) => controller.text).join(', ')}]';
+          }).join(',')}]'),
+          actions: <Widget>[
+            ElevatedButton(
+              child: Text('閉じる'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -129,15 +177,13 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
             Flexible(
               child: SingleChildScrollView(
                 child: Column(
-                  children: [
-                    ...textFieldGrid.map((List<TextField> row) {
-                      return Row(
-                        children: row
-                            .map((textField) => Expanded(child: textField))
-                            .toList(),
-                      );
-                    }).toList(),
-                  ],
+                  children: textFieldGrid.map((List<TextField> row) {
+                    return Row(
+                      children: row
+                          .map((textField) => Expanded(child: textField))
+                          .toList(),
+                    );
+                  }).toList(),
                 ),
               ),
             ),
@@ -148,7 +194,7 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
-                    onPressed: null,
+                    onPressed: showGridAsText,
                     child: Text('配列表示'),
                   ),
                 ],

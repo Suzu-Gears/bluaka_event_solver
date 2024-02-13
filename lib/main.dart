@@ -80,24 +80,22 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
   }
 
   void removeRow() {
-    // 最後の1行は削除しない
+    // 残り1行は削除しない
     if (textFieldGrid.length > 1) {
       setState(() {
         textFieldGrid.removeLast();
-        // コントローラーのリストも削除
         controllersGrid.removeLast();
       });
     }
   }
 
   void removeColumn() {
-    // 各行の最後の1列は削除しない
-    if (textFieldGrid.first.length > 1) {
+    // 各行の残り3列は削除しない
+    if (textFieldGrid.first.length > 3) {
       setState(() {
         for (var row in textFieldGrid) {
           row.removeLast();
         }
-        // 各行から最後のコントローラーを削除
         for (var rowControllers in controllersGrid) {
           rowControllers.removeLast();
         }
@@ -166,7 +164,7 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
                     child: Text('列を追加'),
                   ),
                   ElevatedButton(
-                    onPressed: textFieldGrid.first.length > 1
+                    onPressed: textFieldGrid.first.length > 3
                         ? removeColumn
                         : null, //列が1つのみの場合は削除ボタンを非活性化
                     child: Text('列を削除'),

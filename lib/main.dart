@@ -92,50 +92,46 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              ...textFieldGrid.map((List<TextField> row) {
-                return Row(
-                  children: row
-                      .map((textField) => Expanded(child: textField))
-                      .toList(),
-                );
-              }).toList(),
-              SizedBox(height: 50), // 下の要素の高さのスペースを確保
-            ],
-          ),
-        ),
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: 0,
-          child: Container(
-            height: 50, // 下の要素の高さは固定
-            color: Colors.blueGrey,
-            child: Center(
+    return Container(
+        padding: const EdgeInsets.all(4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Flexible(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ...textFieldGrid.map((List<TextField> row) {
+                      return Row(
+                        children: row
+                            .map((textField) => Expanded(child: textField))
+                            .toList(),
+                      );
+                    }).toList(),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(8),
+              color: Colors.blueGrey,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
                     onPressed: addRow,
                     child: Text('行を追加'),
                   ),
-                  SizedBox(width: 20), // ボタン間のスペース
                   ElevatedButton(
                     onPressed: textFieldGrid.length > 1
                         ? removeRow
                         : null, //行が1つのみの場合は削除ボタンを非活性化
                     child: Text('行を削除'),
                   ),
-                  SizedBox(width: 20), // ボタン間のスペース
                   ElevatedButton(
                     onPressed: addColumn,
                     child: Text('列を追加'),
                   ),
-                  SizedBox(width: 20), // ボタン間のスペース
                   ElevatedButton(
                     onPressed: textFieldGrid.first.length > 1
                         ? removeColumn
@@ -145,9 +141,7 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
                 ],
               ),
             ),
-          ),
-        ),
-      ],
-    );
+          ],
+        ));
   }
 }

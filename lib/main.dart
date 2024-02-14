@@ -220,7 +220,7 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
                   ElevatedButton(
                     onPressed: textFieldGrid.length > 1
                         ? removeRow
-                        : null, //行が1つのみの場合は削除ボタンを非活性化
+                        : null, //行が1つ以下の場合は削除ボタンを非活性化
                     child: Text('行を削除'),
                   ),
                   ElevatedButton(
@@ -230,7 +230,7 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
                   ElevatedButton(
                     onPressed: textFieldGrid.first.length > 3
                         ? removeColumn
-                        : null, //列が1つのみの場合は削除ボタンを非活性化
+                        : null, //列が3つ以下の場合は削除ボタンを非活性化
                     child: Text('列を削除'),
                   ),
                 ],

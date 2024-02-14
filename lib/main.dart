@@ -267,6 +267,11 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
                 children: [
                   ElevatedButton(
                       onPressed: () async {
+                        removeText();
+                      },
+                      child: Text('REMOVE')),
+                  ElevatedButton(
+                      onPressed: () async {
                         saveText(converControllerGridToString(controllersGrid));
                       },
                       child: Text('SAVE')),
@@ -285,11 +290,6 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
                     },
                     child: Text('配列表示'),
                   ),
-                  ElevatedButton(
-                      onPressed: () async {
-                        removeText();
-                      },
-                      child: Text('REMOVE')),
                   ElevatedButton(
                     onPressed: resetGrid,
                     child: Text('RESET'),

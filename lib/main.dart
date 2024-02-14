@@ -56,22 +56,21 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
 
   void initializeGrid() {
     // 初期状態で4行3列のテキストフィールドを追加
-    addRow();
-    addRow();
-    addRow();
-    addRow();
-    addColumn();
-    addColumn();
-    addColumn();
+    const List<List<String>> gridText = [
+      ["", "", "", ""],
+      ["", "", "", ""],
+      ["", "", "", ""],
+      ["", "", "", ""]
+    ];
+    createGrid(gridText);
   }
 
   void addRow() {
     setState(() {
-      int numberOfColumns =
-          controllersGrid.isEmpty ? 1 : controllersGrid.first.length;
       List<TextField> newRow = [];
       List<TextEditingController> newControllersRow = [];
       for (int i = 0; i < numberOfColumns; i++) {
+      int numberOfColmuns = controllersGrid.first.length;
         TextEditingController newController = TextEditingController();
         newControllersRow.add(newController);
         newRow.add(createTextField(newController));

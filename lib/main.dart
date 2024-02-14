@@ -69,11 +69,13 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
     setState(() {
       List<TextField> newRow = [];
       List<TextEditingController> newControllersRow = [];
-      for (int i = 0; i < numberOfColumns; i++) {
+      int numberOfRows = controllersGrid.length;
       int numberOfColmuns = controllersGrid.first.length;
+      for (int col = 0; col < numberOfColmuns; col++) {
         TextEditingController newController = TextEditingController();
         newControllersRow.add(newController);
-        newRow.add(createTextField(newController));
+        newRow.add(createTextField(
+            controller: newController, row: numberOfRows, col: col));
       }
       textFieldGrid.add(newRow);
       controllersGrid.add(newControllersRow);
@@ -82,10 +84,13 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
 
   void addColumn() {
     setState(() {
-      for (int i = 0; i < textFieldGrid.length; i++) {
+      int numberOfRows = controllersGrid.length;
+      int numberOfColmuns = controllersGrid.first.length;
+      for (int row = 0; row < numberOfRows; row++) {
         TextEditingController newController = TextEditingController();
-        controllersGrid[i].add(newController);
-        textFieldGrid[i].add(createTextField(newController));
+        textFieldGrid[row].add(createTextField(
+            controller: newController, row: row, col: numberOfColmuns));
+        controllersGrid[row].add(newController);
       }
     });
   }
@@ -116,16 +121,19 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
 
   void createGrid(List<List<String>> gridText) {
     removeGrid();
-    for (int row = 0; row < gridText.length; row++) {
+    int numberOfRows = gridText.length;
+    int numberOfColmuns = gridText.first.length;
+    for (int row = 0; row < numberOfRows; row++) {
       List<String> rowText = gridText[row];
       List<TextField> newRow = [];
       List<TextEditingController> newControllersRow = [];
-      for (int col = 0; col < rowText.length; col++) {
+      for (int col = 0; col < numberOfColmuns; col++) {
         String cellText = rowText[col];
         TextEditingController newController =
             TextEditingController(text: cellText);
         newControllersRow.add(newController);
-        newRow.add(createTextField(newController));
+        newRow.add(
+            createTextField(controller: newController, row: row, col: col));
       }
       textFieldGrid.add(newRow);
       controllersGrid.add(newControllersRow);
@@ -144,7 +152,10 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
     });
   }
 
-  TextField createTextField(TextEditingController controller) {
+  TextField createTextField(
+      {required TextEditingController controller,
+      required int row,
+      required int col}) {
     return TextField(
       controller: controller,
       decoration: InputDecoration(

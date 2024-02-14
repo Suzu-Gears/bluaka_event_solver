@@ -178,7 +178,6 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
   }
 
   void showCustomDialog(String title, String content) async {
-    // テキスト形式で二次配列をダイアログに表示
     showDialog(
       context: context,
       builder: (context) {

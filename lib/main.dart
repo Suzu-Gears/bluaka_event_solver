@@ -47,11 +47,12 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
   @override
   void initState() {
     super.initState();
+    initializeGrid();
     Future(() async {
       final String? loadedText = await loadText();
-      loadedText != null
-          ? createGrid(parseStringToListOfLists(loadedText))
-          : initializeGrid();
+      if (loadedText != null) {
+        createGrid(parseStringToListOfLists(loadedText));
+      }
     });
   }
 

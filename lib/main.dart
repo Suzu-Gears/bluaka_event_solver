@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'local_storage.dart';
 import 'dart:convert';
 
@@ -231,7 +232,11 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
         enabled: enabled,
         decoration: decoration,
         keyboardType: keyboadType,
-        inputFormatters: [],
+        inputFormatters: (row == 0 || col == 0)
+            ? []
+            : [
+                FilteringTextInputFormatter.allow(RegExp(r'^[1-9]\d*|0$')),
+              ],
       ),
     );
   }

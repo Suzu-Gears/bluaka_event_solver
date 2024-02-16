@@ -82,13 +82,17 @@ class _DynamicLayoutGridState extends State<DynamicLayoutGrid> {
                   ? _removeColumn
                   : null,
             ),
+            Row(
+              children: _gridController.textFieldGrid.first,
+            ),
             Flexible(
               child: Scrollbar(
                 thumbVisibility: true,
                 child: SingleChildScrollView(
                   child: Column(
-                    children:
-                        _gridController.textFieldGrid.map((List<Widget> row) {
+                    children: _gridController.textFieldGrid
+                        .sublist(1, _gridController.textFieldGrid.length - 2)
+                        .map((List<Widget> row) {
                       return Row(
                         children: row,
                       );
@@ -96,6 +100,13 @@ class _DynamicLayoutGridState extends State<DynamicLayoutGrid> {
                   ),
                 ),
               ),
+            ),
+            Row(
+              children: _gridController
+                  .textFieldGrid[_gridController.textFieldGrid.length - 2],
+            ),
+            Row(
+              children: _gridController.textFieldGrid.last,
             ),
             BottomControlButtons(
               onRemoveText: removeText,

@@ -83,14 +83,17 @@ class _DynamicLayoutGridState extends State<DynamicLayoutGrid> {
                   : null,
             ),
             Flexible(
-              child: SingleChildScrollView(
-                child: Column(
-                  children:
-                      _gridController.textFieldGrid.map((List<Widget> row) {
-                    return Row(
-                      children: row,
-                    );
-                  }).toList(),
+              child: Scrollbar(
+                thumbVisibility: true,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children:
+                        _gridController.textFieldGrid.map((List<Widget> row) {
+                      return Row(
+                        children: row,
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
             ),

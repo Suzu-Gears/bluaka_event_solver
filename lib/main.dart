@@ -289,9 +289,9 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
+        alignment: Alignment.center,
         padding: const EdgeInsets.all(4),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               padding: const EdgeInsets.all(8),

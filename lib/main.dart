@@ -107,8 +107,8 @@ class _DynamicLayoutScreenState extends State<DynamicLayoutScreen> {
   }
 
   void removeRow() {
-    // 残り3行以下では削除しない
-    if (textFieldGrid.length > 3) {
+    // 残り4行以下では削除しない
+    if (textFieldGrid.length > 4) {
       setState(() {
         // 下から3行目の要素を削除する
         int removeIndex = textFieldGrid.length - 3;

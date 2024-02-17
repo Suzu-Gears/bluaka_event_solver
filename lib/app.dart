@@ -4,10 +4,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'ブルアカイベント周回ソルバー',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('動的なレイアウトデモ'),
+          title: const Text('ブルアカイベント周回ソルバー'),
         ),
         body: DynamicLayoutGrid(),
       ),

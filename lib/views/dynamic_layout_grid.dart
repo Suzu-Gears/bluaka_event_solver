@@ -122,13 +122,6 @@ class _DynamicLayoutGridState extends State<DynamicLayoutGrid> {
                       ? _createGrid(parseStringToListOfLists(loadedText))
                       : showCustomDialog(context, '読み取り結果', 'データが保存されていません。');
                 },
-                onDisplayArray: () {
-                  showCustomDialog(
-                      context,
-                      '配列の内容',
-                      converControllerGridToString(
-                          _gridController.controllersGrid));
-                },
                 onReset: _resetGrid,
                 onCalc: () {
                   SolverLogic solverLogic = SolverLogic(

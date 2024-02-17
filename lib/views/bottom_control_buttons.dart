@@ -3,7 +3,6 @@ import 'package:bluaka_event_solver/importer.dart';
 class BottomControlButtons extends StatelessWidget {
   final VoidCallback onSave;
   final VoidCallback onLoad;
-  final VoidCallback onDisplayArray;
   final VoidCallback onReset;
   final VoidCallback onCalc;
 
@@ -11,7 +10,6 @@ class BottomControlButtons extends StatelessWidget {
     Key? key,
     required this.onSave,
     required this.onLoad,
-    required this.onDisplayArray,
     required this.onReset,
     required this.onCalc,
   }) : super(key: key);
@@ -31,10 +29,6 @@ class BottomControlButtons extends StatelessWidget {
           ElevatedButton(
             onPressed: onLoad,
             child: Text('LOAD'),
-          ),
-          ElevatedButton(
-            onPressed: onDisplayArray,
-            child: Text('配列表示'),
           ),
           ElevatedButton(
             onPressed: onReset,

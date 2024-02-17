@@ -23,3 +23,14 @@ List<List<String>> parseStringToListOfLists(String jsonString) {
 
   return gridText;
 }
+
+List<List<String>> fillWithZero(List<List<String>> gridText) {
+  for (int row = 0; row < gridText.length; row++) {
+    for (int col = 0; col < gridText[row].length; col++) {
+      if (!(row == 0 || col == 0) && gridText[row][col].isEmpty) {
+        gridText[row][col] = '0';
+      }
+    }
+  }
+  return gridText;
+}

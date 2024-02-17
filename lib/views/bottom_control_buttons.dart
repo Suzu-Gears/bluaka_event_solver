@@ -1,19 +1,19 @@
 import 'package:bluaka_event_solver/importer.dart';
 
 class BottomControlButtons extends StatelessWidget {
-  final VoidCallback onRemoveText;
   final VoidCallback onSave;
   final VoidCallback onLoad;
   final VoidCallback onDisplayArray;
   final VoidCallback onReset;
+  final VoidCallback onCalc;
 
   const BottomControlButtons({
     Key? key,
-    required this.onRemoveText,
     required this.onSave,
     required this.onLoad,
     required this.onDisplayArray,
     required this.onReset,
+    required this.onCalc,
   }) : super(key: key);
 
   @override
@@ -24,10 +24,6 @@ class BottomControlButtons extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          ElevatedButton(
-            onPressed: onRemoveText,
-            child: Text('REMOVE'),
-          ),
           ElevatedButton(
             onPressed: onSave,
             child: Text('SAVE'),
@@ -43,6 +39,10 @@ class BottomControlButtons extends StatelessWidget {
           ElevatedButton(
             onPressed: onReset,
             child: Text('RESET'),
+          ),
+          ElevatedButton(
+            onPressed: onCalc,
+            child: Text('計算実行'),
           ),
         ],
       ),

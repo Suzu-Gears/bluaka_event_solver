@@ -109,7 +109,6 @@ class _DynamicLayoutGridState extends State<DynamicLayoutGrid> {
               children: _gridController.textFieldGrid.last,
             ),
             BottomControlButtons(
-              onRemoveText: removeText,
               onSave: () async {
                 saveText(converControllerGridToString(
                     _gridController.controllersGrid));
@@ -128,6 +127,17 @@ class _DynamicLayoutGridState extends State<DynamicLayoutGrid> {
                         _gridController.controllersGrid));
               },
               onReset: _resetGrid,
+              onCalc: () {
+                SolverLogic solverLogic = SolverLogic(
+                    stageList: gridTextToStageList(fillWithZero(
+                        parseStringToListOfLists(converControllerGridToString(
+                            _gridController.controllersGrid)))),
+                    itemList: gridTextToItemList((fillWithZero(
+                        parseStringToListOfLists(converControllerGridToString(
+                            _gridController.controllersGrid))))),
+                    context: context);
+                solverLogic.calculateSolver();
+              },
             ),
           ],
         ));
